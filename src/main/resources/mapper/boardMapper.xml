@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.campus.myapp.dao.BoardDAO">
+	<insert id="boardInsert">
+		insert into board(subject, content, userid, ip)
+		values(#{subject}, #{content}, #{userid}, #{ip})
+	</insert>
+	
+	<select id="boardList" resultType="com.campus.myapp.vo.BoardVO">
+		select no, subject, userid, hit, date_format(writedate, '%m-%d %H:%i') writedate
+		from board
+		<if test="searchWord!=null">
+			where ${searchKey} like '%${searchWord}%'
+		</if>
+		order by no desc
+		limit ${onePageRecord} offset ${offsetIndex}
+	</select>
+	
+	<select id="totalRecord" resultType="int">
+		select count(no) cnt
+		from board
+		<if	test='searchWord != null'>
+			where ${searchKey} like '%${searchWord}%'
+		</if>
+	</select>
+	
+	<select id="boardSelect" resultType="com.campus.myapp.vo.BoardVO">
+		select no, subject, userid, hit, writedate, content
+		from board
+		where no=#{param1}
+	</select>
+	
+	<update id="hitCount">
+		update board set hit = hit+1 
+		where no=#{param1}
+	</update>
+	
+	<update id="boardUpdate">
+		update board set subject=#{subject}, content=#{content}
+		where no=${no} and userid=#{userid}
+	</update>
+	
+	<delete id="boardDelete">
+		delete from board
+		where no=#{param1} and userid=#{param2}
+	</delete>
+	
+	<delete id="boardMultiDelete">
+		delete from board
+		<where>
+			<foreach item="item" collection="noList" open="no in (" separator="," close=")">
+				#{item}
+			</foreach>
+			and userid = #{userid}
+		</where>
+	</delete>
+</mapper>

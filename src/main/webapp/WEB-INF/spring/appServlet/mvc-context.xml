@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+		xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Interceptor 처리를 위한 컨트롤러 목록을 등록할 객체 생성한다. 
+		namespaces에서 context, mvc 추가
+	-->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/board/boardWrite"/>
+			<mvc:mapping path="/board/boardWriteOk"/>
+			<mvc:mapping path="/board/boardEdit"/>
+			<mvc:mapping path="/board/boardEditOk"/>
+			<mvc:mapping path="/board/boardDel"/>
+			<mvc:mapping path="/member/memberEdit"/>
+			<mvc:mapping path="/member/memberEditOk"/>
+			<mvc:mapping path="/data/write"/>
+			<bean class="com.campus.myapp.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+
+</beans>
